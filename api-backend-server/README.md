@@ -1,4 +1,6 @@
 # PMS
+Project management tools are a set of software designed to help project teams to plan a project, track & manage the projects to achieve the defined project goals within the time. It also helps team members to collaborate effectively and accelerate the projects to meet the specified constraints
+
 This repo can be used as a starting point for backend development with Nodejs, Express, TypeScript and MongoDB.
 
 A few things to note in the project:
@@ -22,8 +24,8 @@ A few things to note in the project:
 #### 1. Clone this repo
 
 ```
-$ git clone https://github.com/.git your-app-name
-$ cd your-app-name
+$ git clone https://github.com/VasanthElang/pms.git pms
+$ cd pms
 ```
 
 #### 2. Install dependencies
