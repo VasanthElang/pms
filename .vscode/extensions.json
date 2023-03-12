@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "s3gf4ult.monokai-vibrant",
+    "vscode-icons-team.vscode-icons",
+    "christian-kohler.npm-intellisense",
+    "ms-azuretools.vscode-docker"
+  ]
+}

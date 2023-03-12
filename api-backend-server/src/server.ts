@@ -5,6 +5,8 @@ import { app } from './app';
 import SafeMongooseConnection from './providers/mongo-connection';
 import { logger } from './providers/logger';
 
+let isConnectedBefore: boolean;
+
 let debugCallback;
 if (envConfig.NODE_ENV === 'development') {
   debugCallback = (collectionName: string, method: string, query: any, doc: string): void => {
@@ -44,7 +46,10 @@ if (envConfig.MONGODB_URI == null) {
 } else {
   safeMongooseConnection.connect(mongoUrl => {
     logger.info(`Connected to MongoDB at ${mongoUrl}`);
-    serve();
+    if (!isConnectedBefore) {
+      isConnectedBefore = true;
+      serve();
+    }
   });
 }
 
