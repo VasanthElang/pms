@@ -65,11 +65,14 @@ export const relogRequestHandler = (
   if (options?.validation?.body) {
     const { error } = options?.validation?.body.validate(req.body);
     if (error != null) {
-      return next(new BadRequest(getMessageFromJoiError(error)));
+      next(new BadRequest(getMessageFromJoiError(error)));
+      return
     }
   }
 
-  return handler(req, res, next).catch((err: Error) => {
+  try {
+    handler(req, res, next);
+  } catch (err) {
     if (process.env.NODE_ENV === 'development') {
       logger.log({
         level: 'error',
@@ -78,5 +81,5 @@ export const relogRequestHandler = (
       });
     }
     next(err);
-  });
+  };
 };

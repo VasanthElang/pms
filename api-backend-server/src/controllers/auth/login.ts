@@ -10,7 +10,7 @@ const loginWrapper: RequestHandler = async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (user && user.validPassword(password)) {
+  if (user && user.validPassword(password, user.password)) {
     const token = jwt.sign(
       {
         _e: user.email,

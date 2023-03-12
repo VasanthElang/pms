@@ -22,7 +22,7 @@ export interface IUser extends Document {
   /** Created On */
   updatedOn: Date;
   encryptPassword: (password: string) => string;
-  validPassword: (password: string) => boolean;
+  validPassword: (inputPassword:string, password: string) => boolean;
 
 }
 
@@ -57,8 +57,8 @@ const schema = new Schema({
 
 schema.methods.encryptPassword = (password: string) => hashSync(password, genSaltSync(10));
 
-schema.methods.validPassword = function (password: string) {
-  return compareSync(password, this.password);
+schema.methods.validPassword = function (inputPassword:string, password: string) {
+  return compareSync(inputPassword, password);
 };
 
 export const User: IUserModel = model<IUser, IUserModel>('User', schema);
