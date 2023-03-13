@@ -18,7 +18,7 @@ const registerWrapper: RequestHandler = async (req, res) => {
   const user = new User({
     email, firstName, lastName, createdOn: Date.now()
   });
-  if (User.findOne({ email })) { res.status(200).send('email already registered!'); } else {
+  if (await User.findOne({ email })) { res.status(200).send('email already registered!'); } else {
     user.password = user.encryptPassword(password);
     await user.save();
     res.status(201).json(user.toJSON());

@@ -26,7 +26,7 @@ const defaultMongooseConnectionOptions: ConnectOptions = {
  *
  * This library tries to auto-reconnect to
  * MongoDB without crashing the server.
- * @author Sidhant Panda
+ * @author Vasanth Elangovan
  */
 export default class SafeMongooseConnection {
   /** Safe Mongoose Connection options */
@@ -91,7 +91,7 @@ export default class SafeMongooseConnection {
       this.options.onStartConnection(this.options.mongoUrl);
     }
     mongoose.connect(this.options.mongoUrl, this.mongoConnectionOptions).catch(() => { });
-  }
+  };
 
   /**
    * Handler called when mongo connection is established
@@ -119,6 +119,7 @@ export default class SafeMongooseConnection {
     if (!this.isConnectedBefore && !this.shouldCloseConnection) {
       this.connectionTimeout = setTimeout(() => {
         this.startConnection();
+        // eslint-disable-next-line no-unused-expressions
         this.connectionTimeout && clearTimeout(this.connectionTimeout);
       }, this.retryDelayMs);
       if (this.options.onConnectionRetry) {

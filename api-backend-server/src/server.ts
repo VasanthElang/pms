@@ -6,7 +6,7 @@ import SafeMongooseConnection from './providers/mongo-connection';
 import { logger } from './providers/logger';
 
 let isConnectedBefore: boolean;
-
+isConnectedBefore = false;
 let debugCallback;
 if (envConfig.NODE_ENV === 'development') {
   debugCallback = (collectionName: string, method: string, query: any, doc: string): void => {
@@ -31,14 +31,21 @@ const safeMongooseConnection = new SafeMongooseConnection({
   onConnectionRetry: mongoUrl => logger.info(`Retrying to MongoDB at ${mongoUrl}`)
 });
 
-const serve = () => app.listen(envConfig.PORT, () => {
-  logger.info(`🌏 Express server started at http://localhost:${envConfig.PORT}`);
+const serve = () => {
+  // eslint-disable-next-line no-console
+  console.log(isConnectedBefore, 'isConnectedBefore');
+  if (!isConnectedBefore) {
+    isConnectedBefore = true;
+    app.listen(envConfig.PORT, () => {
+      logger.info(`🌏 Express server started at http://localhost:${envConfig.PORT}`);
 
-  if (envConfig.NODE_ENV === 'development') {
-    // This route is only present in development mode
-    logger.info(`⚙️  Swagger UI hosted at http://localhost:${envConfig.PORT}/api/dev/api-docs`);
+      if (envConfig.NODE_ENV === 'development') {
+        // This route is only present in development mode
+        logger.info(`⚙️  Swagger UI hosted at http://localhost:${envConfig.PORT}/api/dev/api-docs`);
+      }
+    });
   }
-});
+};
 
 if (envConfig.MONGODB_URI == null) {
   logger.error('MONGO_URL not specified in environment', new Error('MONGODB_URI not specified in environment'));
@@ -46,10 +53,7 @@ if (envConfig.MONGODB_URI == null) {
 } else {
   safeMongooseConnection.connect(mongoUrl => {
     logger.info(`Connected to MongoDB at ${mongoUrl}`);
-    if (!isConnectedBefore) {
-      isConnectedBefore = true;
-      serve();
-    }
+    serve();
   });
 }
 
