@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  api-server:
+    build:
+      context: .
+    container_name: api-server
+    image: api-server
+    restart: unless-stopped
+    environment:
+      #Node Server Environment variables
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGODB_URI=mongodb://host.docker.internal:27017/sify-pms
+      - JWT_SECRET=zdCET3iGkV3HU/53w4ywcPBOIYeRB91HC4aLiHMw
+      - JWT_EXPIRYIN=12h
+      - APP_KEY="f239304d8707dd987d619fb34c17e31973d433bba719a4d43aed192befeb4cee1"
+      - APP_SALT="1620b51b7d095c170d9ad7f3e5e9f9e2"
+    volumes:
+      - ./logs:/logs
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
+
+networks:
+  app-network:
+    driver: bridge
